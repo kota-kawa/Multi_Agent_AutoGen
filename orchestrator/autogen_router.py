@@ -18,6 +18,7 @@ from typing import Dict, Literal
 
 from dotenv import load_dotenv
 from autogen_ext.models.openai import OpenAIChatCompletionClient
+from autogen_core.models import SystemMessage, UserMessage
 
 load_dotenv()
 
@@ -92,8 +93,8 @@ class Orchestrator:
         """
         resp = await self.client.create(
             messages=[
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
+                SystemMessage(content=system),
+                UserMessage(content=user, source="user"),
             ],
         )
         # OpenAI互換の想定: choices[0].message.content
