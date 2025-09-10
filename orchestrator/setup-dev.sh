@@ -15,7 +15,8 @@ fi
 echo "Building Docker containers..."
 docker-compose -f docker-compose.dev.yml build
 
-echo "Starting development server with auto-reload..."
+echo "Starting Flask development server with auto-reload..."
+echo "Using Flask built-in development server (not gunicorn) for instant code reloading."
 echo "The server will automatically reload when you change code files."
 echo "Access the application at http://localhost:8000"
 echo "Press Ctrl+C to stop the server"

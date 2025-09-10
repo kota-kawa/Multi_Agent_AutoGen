@@ -18,5 +18,7 @@ COPY . /app
 
 EXPOSE 8000
 
-# 開発時: gunicorn with reload, 本番時: gunicorn without reload
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app", "--workers", "1", "--threads", "4", "--timeout", "120", "--reload"]
+# Flask development server with auto-reload
+ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
+CMD ["python", "app.py"]

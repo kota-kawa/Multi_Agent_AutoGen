@@ -1,6 +1,5 @@
 # Essential Flask packages
 Flask
-gunicorn
 python-dotenv
 
 # AutoGen dependencies # <--- 以下の行を追加

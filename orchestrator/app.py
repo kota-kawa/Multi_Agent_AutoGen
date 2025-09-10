@@ -55,7 +55,7 @@ def api_ask():
 
 @app.get("/healthz")
 def healthz():
-    return "ok - auto-reload verified!", 200
+    return "ok - Flask development server with auto-reload!", 200
 
 @app.get("/status")
 def status():
@@ -63,7 +63,7 @@ def status():
         "autogen_available": AUTOGEN_AVAILABLE,
         "debug_mode": app.debug,
         "auto_reload": app.config.get("TEMPLATES_AUTO_RELOAD", False),
-        "message": "Auto-reload is working! Code changes are automatically reflected! 自動リロード機能が動作中です！"
+        "message": "Auto-reload is working! Code changes are automatically reflected! 自動リロード機能が動作中です！ Flask開発サーバー使用中"
     })
 
 if __name__ == "__main__":
