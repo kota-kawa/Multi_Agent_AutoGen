@@ -121,8 +121,21 @@ html,body{
 /* 選択されたエージェントを強調 */
 .agent-card.selected{
   background:var(--highlight);
+}
+
+.agent-card.selected-coder{
   border-color:var(--primary);
   box-shadow:0 0 0 2px rgba(74,168,255,.25), 0 12px 32px rgba(0,0,0,.35);
+}
+
+.agent-card.selected-analyst{
+  border-color:var(--ok);
+  box-shadow:0 0 0 2px rgba(46,204,113,.25), 0 12px 32px rgba(0,0,0,.35);
+}
+
+.agent-card.selected-travel{
+  border-color:var(--warn);
+  box-shadow:0 0 0 2px rgba(255,204,0,.25), 0 12px 32px rgba(0,0,0,.35);
 }
 
 /* 回答 */
