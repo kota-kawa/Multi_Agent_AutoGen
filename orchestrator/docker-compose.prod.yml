@@ -7,10 +7,10 @@ services:
       - ./:/app
       - /app/__pycache__
     environment:
-      - FLASK_ENV=development
-      - FLASK_DEBUG=1
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
-    command: ["python", "app.py"]
+    command: ["gunicorn", "-b", "0.0.0.0:8000", "app:app", "--workers", "4", "--threads", "4", "--timeout", "120"]
     stdin_open: true
     tty: true
