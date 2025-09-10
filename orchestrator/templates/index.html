@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AutoGen Orchestrator (3 Agents)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <h1>AutoGen Orchestrator (3 Agents)</h1>
+    <p class="sub">プロンプトに応じて最適なエージェントを自動選択します</p>
+  </header>
+
+  <main class="container">
+    <section class="prompt-panel">
+      <label for="prompt" class="label">プロンプト</label>
+      <textarea id="prompt" class="prompt-input" placeholder="例: Flask で WebSocket の再接続処理を組み込みたい。堅牢な実装例は？"></textarea>
+      <div class="actions">
+        <button id="sendBtn" class="btn">送信</button>
+        <span id="status" class="status"></span>
+      </div>
+    </section>
+
+    <section class="agents">
+      <div class="agent-card" id="agent-coder">
+        <div class="agent-title">Coder</div>
+        <p class="agent-desc">実装/設計/デプロイ/LLM連携など技術解決</p>
+      </div>
+      <div class="agent-card" id="agent-analyst">
+        <div class="agent-title">Analyst</div>
+        <p class="agent-desc">データ分析/統計/検証/リサーチ</p>
+      </div>
+      <div class="agent-card" id="agent-travel">
+        <div class="agent-title">Travel</div>
+        <p class="agent-desc">旅行計画/観光/実務的アドバイス</p>
+      </div>
+    </section>
+
+    <section class="response-panel">
+      <h2>回答</h2>
+      <pre id="response" class="response"></pre>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© 2025 AutoGen Orchestrator</small>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

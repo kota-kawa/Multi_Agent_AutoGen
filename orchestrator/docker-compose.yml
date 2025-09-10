@@ -1,0 +1,7 @@
+services:
+  web:
+    command: ["gunicorn", "-b", "0.0.0.0:8000", "app:app", "--workers", "1", "--threads", "4", "--timeout", "120", "--reload"]
+    environment:
+      - FLASK_DEBUG=1
+    volumes:
+      - ./:/app
