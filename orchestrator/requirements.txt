@@ -1,0 +1,7 @@
+# Essential Flask packages
+Flask
+gunicorn
+python-dotenv
+
+# AutoGen will need to be installed with the command in root requirements.txt
+# This is a simplified setup for Docker auto-reload functionality

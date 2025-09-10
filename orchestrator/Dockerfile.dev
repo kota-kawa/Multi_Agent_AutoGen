@@ -1,0 +1,24 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
+
+WORKDIR /app
+
+# Install basic dependencies for development
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install basic Flask packages first
+RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org Flask gunicorn python-dotenv
+
+# Copy application files
+COPY . /app
+
+EXPOSE 8000
+
+# Development mode: run Flask directly with auto-reload
+CMD ["python", "app.py"]
