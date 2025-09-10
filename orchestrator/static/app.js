@@ -22,9 +22,9 @@
   const selectionText = $("#selection-text");
 
   const agentNames = {
-    coder: "Coder (技術実装エージェント)",
-    analyst: "Analyst (データ分析エージェント)",
-    travel: "Travel (旅行計画エージェント)"
+    coder: "Coder (ソフトウェアエンジニア)",
+    analyst: "Analyst (データアナリスト)",
+    travel: "Travel (旅行プランナー)"
   };
 
   function clearHighlights(){
@@ -67,6 +67,8 @@
       }
 
       // data.selected: "coder" | "analyst" | "travel" | "none"
+      console.log("API Response:", data); // デバッグログ
+      
       if(data.selected && agentEls[data.selected]){
         agentEls[data.selected].classList.add("selected", `selected-${data.selected}`);
         if(statusEls[data.selected]){
@@ -75,11 +77,15 @@
         
         // Update selection info
         selectionInfo.classList.add("active", `active-${data.selected}`);
-        selectionText.textContent = `✓ ${agentNames[data.selected]} が選択されました`;
+        selectionText.textContent = `✓ ${agentNames[data.selected]} が選択されて回答しました`;
       } else if(data.selected === "none") {
         // Show general response info
         selectionInfo.classList.add("active");
         selectionText.textContent = "✓ 汎用エージェントが応答しました";
+      } else {
+        // エラーケース
+        selectionInfo.classList.add("active");
+        selectionText.textContent = `⚠️ 不明なエージェント (${data.selected}) が応答しました`;
       } // "none" の場合はハイライトなし
 
       respEl.textContent = data.response || "(no content)";
