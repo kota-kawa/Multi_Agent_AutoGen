@@ -9,17 +9,37 @@ from dotenv import load_dotenv
 # Try to import autogen_router, fall back to mock implementation if not available
 try:
     from autogen_router import Orchestrator
+    # Test if we can actually create an orchestrator (API keys available)
+    test_orch = Orchestrator()
     AUTOGEN_AVAILABLE = True
-except ImportError:
-    print("Warning: autogen_router not available. Using mock implementation for development.")
+except Exception as e:
+    print(f"Warning: autogen_router not fully available ({e}). Using mock implementation for development.")
     AUTOGEN_AVAILABLE = False
     
     class MockOrchestrator:
         async def ask_async(self, prompt):
-            return {
-                "selected": "none",
-                "response": f"Mock response for development: '{prompt}'. AutoGen dependencies need to be installed for full functionality."
-            }
+            # Simple mock logic to test different agent selections
+            prompt_lower = prompt.lower()
+            if any(keyword in prompt_lower for keyword in ["code", "program", "flask", "websocket", "実装", "設計", "デプロイ"]):
+                return {
+                    "selected": "coder",
+                    "response": f"Mock coder response for development: '{prompt}'. This would normally be handled by the Coder agent."
+                }
+            elif any(keyword in prompt_lower for keyword in ["data", "analysis", "research", "統計", "分析", "データ"]):
+                return {
+                    "selected": "analyst", 
+                    "response": f"Mock analyst response for development: '{prompt}'. This would normally be handled by the Analyst agent."
+                }
+            elif any(keyword in prompt_lower for keyword in ["travel", "trip", "vacation", "旅行", "観光", "プラン"]):
+                return {
+                    "selected": "travel",
+                    "response": f"Mock travel response for development: '{prompt}'. This would normally be handled by the Travel agent."
+                }
+            else:
+                return {
+                    "selected": "none",
+                    "response": f"Mock general response for development: '{prompt}'. AutoGen dependencies need to be installed for full functionality."
+                }
 
 load_dotenv()
 
