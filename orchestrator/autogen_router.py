@@ -14,6 +14,7 @@ AutoGen (autogen-ext) を用いて:
 import os
 import json
 import asyncio
+import re
 from typing import Dict, Literal
 
 from dotenv import load_dotenv
@@ -83,6 +84,36 @@ def build_model_client() -> OpenAIChatCompletionClient:
     )
     return client
 
+def clean_response_content(content: str) -> str:
+    """
+    レスポンスからAPIのメタデータやプログラミング的な情報を除去する
+    """
+    if not content:
+        return ""
+    
+    # 一般的なAPIメタデータパターンを除去
+    # finish_reason='length' などのパターン
+    content = re.sub(r"finish_reason\s*=\s*['\"][^'\"]*['\"]", "", content)
+    
+    # usage=RequestUsage(...) などのパターン  
+    content = re.sub(r"usage\s*=\s*RequestUsage\([^)]*\)", "", content)
+    
+    # cached=False, logprobs=None, thought=None などのパターン
+    content = re.sub(r"\b(cached|logprobs|thought)\s*=\s*[^,\s]+", "", content)
+    
+    # content= で始まる部分を除去
+    content = re.sub(r"content\s*=\s*", "", content)
+    
+    # 不完全なURLリンク（例: [TradingView](https:// など）
+    content = re.sub(r"\[([^\]]+)\]\(https?://[^\s)]*$", r"\1", content)
+    
+    # 余分なカンマやスペースをクリーンアップ
+    content = re.sub(r",\s*,", ",", content)
+    content = re.sub(r"\s+", " ", content)
+    content = content.strip()
+    
+    return content
+
 class Orchestrator:
     def __init__(self):
         self.client = build_model_client()
@@ -90,6 +121,7 @@ class Orchestrator:
     async def _chat(self, system: str, user: str) -> str:
         """
         autogen-ext の OpenAI 互換クライアントで 1ターン会話。
+        レスポンスからAPIメタデータを除去して返す。
         """
         resp = await self.client.create(
             messages=[
@@ -99,10 +131,13 @@ class Orchestrator:
         )
         # OpenAI互換の想定: choices[0].message.content
         try:
-            return (resp.choices[0].message.get("content") or "").strip()
+            content = resp.choices[0].message.get("content") or ""
+            return clean_response_content(content.strip())
         except Exception:
             # 念のためフォールバック（ライブラリの差異を吸収）
-            return str(resp)
+            # str(resp)にもメタデータが含まれる可能性があるのでクリーニング
+            fallback_content = str(resp)
+            return clean_response_content(fallback_content)
 
     async def classify_async(self, prompt: str) -> AgentKey:
         raw = await self._chat(CLASSIFIER_SYSTEM, prompt)
