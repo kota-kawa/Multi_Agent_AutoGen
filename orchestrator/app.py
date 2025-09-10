@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
@@ -68,6 +67,6 @@ def status():
     })
 
 if __name__ == "__main__":
-    # 開発ローカル用: flask run と同様（Docker本番は gunicorn）
+    # 開発ローカル用:flask run と同様（Docker本番は gunicorn）
     debug_mode = os.getenv("FLASK_ENV") == "development" or os.getenv("FLASK_DEBUG") == "1"
     app.run(host="0.0.0.0", port=8000, debug=debug_mode, use_reloader=debug_mode)
