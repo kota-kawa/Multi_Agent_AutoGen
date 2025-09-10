@@ -56,7 +56,7 @@ def api_ask():
 
 @app.get("/healthz")
 def healthz():
-    return "ok", 200
+    return "ok - auto-reload verified!", 200
 
 @app.get("/status")
 def status():
