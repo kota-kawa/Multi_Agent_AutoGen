@@ -13,7 +13,14 @@
   };
 
   function clearHighlights(){
-    Object.values(agentEls).forEach(el => el.classList.remove("selected"));
+    Object.values(agentEls).forEach(el =>
+      el.classList.remove(
+        "selected",
+        "selected-coder",
+        "selected-analyst",
+        "selected-travel"
+      )
+    );
   }
 
   async function ask(){
@@ -42,7 +49,7 @@
 
       // data.selected: "coder" | "analyst" | "travel" | "none"
       if(data.selected && agentEls[data.selected]){
-        agentEls[data.selected].classList.add("selected");
+        agentEls[data.selected].classList.add("selected", `selected-${data.selected}`);
       } // "none" の場合はハイライトなし
 
       respEl.textContent = data.response || "(no content)";
