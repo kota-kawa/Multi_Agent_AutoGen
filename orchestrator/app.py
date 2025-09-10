@@ -20,7 +20,7 @@ except Exception as e:
         async def ask_async(self, prompt):
             # Simple mock logic to test different agent selections
             prompt_lower = prompt.lower()
-            if any(keyword in prompt_lower for keyword in ["code", "program", "flask", "websocket", "実装", "設計", "デプロイ"]):
+            if any(keyword in prompt_lower for keyword in ["code", "program", "flask", "websocket", "実装", "設計", "デプロイ", "コード", "プログラム", "開発"]):
                 return {
                     "selected": "coder",
                     "response": f"Mock coder response for development: '{prompt}'. This would normally be handled by the Coder agent."

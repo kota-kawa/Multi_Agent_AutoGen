@@ -12,6 +12,21 @@
     travel: $("#agent-travel"),
   };
 
+  const statusEls = {
+    coder:  $("#status-coder"),
+    analyst:$("#status-analyst"),
+    travel: $("#status-travel"),
+  };
+
+  const selectionInfo = $("#selection-info");
+  const selectionText = $("#selection-text");
+
+  const agentNames = {
+    coder: "Coder (技術実装エージェント)",
+    analyst: "Analyst (データ分析エージェント)",
+    travel: "Travel (旅行計画エージェント)"
+  };
+
   function clearHighlights(){
     Object.values(agentEls).forEach(el =>
       el.classList.remove(
@@ -21,6 +36,10 @@
         "selected-travel"
       )
     );
+    Object.values(statusEls).forEach(el => el.style.display = 'none');
+    
+    selectionInfo.classList.remove("active", "active-coder", "active-analyst", "active-travel");
+    selectionText.textContent = "エージェントが選択されると、ここに表示されます";
   }
 
   async function ask(){
@@ -50,6 +69,17 @@
       // data.selected: "coder" | "analyst" | "travel" | "none"
       if(data.selected && agentEls[data.selected]){
         agentEls[data.selected].classList.add("selected", `selected-${data.selected}`);
+        if(statusEls[data.selected]){
+          statusEls[data.selected].style.display = 'block';
+        }
+        
+        // Update selection info
+        selectionInfo.classList.add("active", `active-${data.selected}`);
+        selectionText.textContent = `✓ ${agentNames[data.selected]} が選択されました`;
+      } else if(data.selected === "none") {
+        // Show general response info
+        selectionInfo.classList.add("active");
+        selectionText.textContent = "✓ 汎用エージェントが応答しました";
       } // "none" の場合はハイライトなし
 
       respEl.textContent = data.response || "(no content)";
