@@ -11,6 +11,6 @@ services:
       - FLASK_DEBUG=1
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
-    command: ["gunicorn", "-b", "0.0.0.0:8000", "app:app", "--workers", "1", "--threads", "4", "--timeout", "120", "--reload", "--log-level", "debug"]
+    command: ["python", "app.py"]
     stdin_open: true
     tty: true

@@ -13,13 +13,14 @@ try:
 except ImportError:
     print("Warning: autogen_router not available. Using mock implementation for development.")
     AUTOGEN_AVAILABLE = False
-    
-    class MockOrchestrator:
-        async def ask_async(self, prompt):
-            return {
-                "selected": "none",
-                "response": f"Mock response for development: '{prompt}'. AutoGen dependencies need to be installed for full functionality."
-            }
+
+# Define MockOrchestrator always, in case we need to fall back to it
+class MockOrchestrator:
+    async def ask_async(self, prompt):
+        return {
+            "selected": "none",
+            "response": f"Mock response for development: '{prompt}'. AutoGen dependencies or API keys need to be configured for full functionality."
+        }
 
 load_dotenv()
 
@@ -30,7 +31,12 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 # プロセス起動時に Orchestrator を初期化（クライアントは使い回す）
 if AUTOGEN_AVAILABLE:
-    orchestrator = Orchestrator()
+    try:
+        orchestrator = Orchestrator()
+    except RuntimeError as e:
+        print(f"Warning: Failed to initialize Orchestrator ({e}). Using mock implementation.")
+        AUTOGEN_AVAILABLE = False
+        orchestrator = MockOrchestrator()
 else:
     orchestrator = MockOrchestrator()
 
